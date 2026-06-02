@@ -53,6 +53,6 @@ def get_mysql_time():
         db_time = cursor.fetchone()
         cursor.close()
         connection.close()
-        return f"<h1>MySQL Current Time: {db_time[0]} from todays class</h1>"
+        return f"<h1>MySQL Current Time: {db_time[0]} from todays class (2nd of june 2026)</h1>"
     except Exception as e:
         return f"<h1>Error connecting to MySQL:</h1><p>{str(e)}</p>"
