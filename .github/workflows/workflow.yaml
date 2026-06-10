@@ -60,7 +60,7 @@ jobs:
           key: ${{ secrets.VM_PEM_KEY }}
           script: |
             cd ~/DevOps_Indutrialization
-            IMAGE_TAG=${{ github.sha[:7] }}
+            IMAGE_TAG=${{ env.COMMIT_HASH }}
             echo "Deploying image: tomipter/devops-flask-app:$IMAGE_TAG"
             IMAGE_TAG=$IMAGE_TAG docker compose pull
             IMAGE_TAG=$IMAGE_TAG docker compose up -d
