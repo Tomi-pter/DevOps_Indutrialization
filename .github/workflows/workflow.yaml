@@ -1,10 +1,10 @@
-name: Workflow for CI/CD 
+name: Workflow for CI/CD
 
 on:
   push:
-    branches: main 
+    branches: main
   pull_request:
-    branches: main 
+    branches: main
   workflow_dispatch:
 
 jobs:
@@ -14,4 +14,5 @@ jobs:
       contents: read
     steps:
       - name: Echo my name
-        run: | echo "My name is Tomi"
+        run: |
+          echo "My name is Tomi"
