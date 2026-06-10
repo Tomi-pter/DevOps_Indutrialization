@@ -13,6 +13,8 @@ services:
       DB_USER: "root"
       DB_PASSWORD: "secret"
       DB_NAME: "mysql"
+      INSTANCE_NAME: "flask-app-1"
+      APP_VERSION: "${APP1_IMAGE_TAG:-latest}"
     depends_on:
       - mysql
 
@@ -28,6 +30,8 @@ services:
       DB_USER: "root"
       DB_PASSWORD: "secret"
       DB_NAME: "mysql"
+      INSTANCE_NAME: "flask-app-2"
+      APP_VERSION: "${APP2_IMAGE_TAG:-latest}"
     depends_on:
       - mysql
 

@@ -63,18 +63,11 @@ jobs:
             cd ~/DevOps_Indutrialization
             git pull origin main
 
-            EXISTING_APP2_TAG=$(grep -E '^APP2_IMAGE_TAG=' .env 2>/dev/null | cut -d '=' -f2)
-            if [ -z "$EXISTING_APP2_TAG" ]; then
-              EXISTING_APP2_TAG=app2
-            fi
-
-            cat > .env <<EOF
-            APP1_IMAGE_TAG=${{ needs.build.outputs.short_sha }}
-            APP2_IMAGE_TAG=$EXISTING_APP2_TAG
-            EOF
+            cp .env.example .env
+            sed -i "s/^APP1_IMAGE_TAG=.*/APP1_IMAGE_TAG=${{ needs.build.outputs.short_sha }}/" .env
 
             echo "Deploying flask-app-1 tag: ${{ needs.build.outputs.short_sha }}"
-            echo "Keeping flask-app-2 tag: $EXISTING_APP2_TAG"
+            echo "Using flask-app-2 tag from template: $(grep '^APP2_IMAGE_TAG=' .env | cut -d '=' -f2)"
 
             docker compose pull
-            docker compose up -d
+            docker compose up -d --force-recreate
