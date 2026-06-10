@@ -47,3 +47,14 @@ jobs:
           context: .
           push: true
           tags: tomipter/devops-flask-app:${{ env.COMMIT_HASH }}
+
+      - name: Deploy to VM via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_PEM_KEY }}
+          script: |
+            cd /DevOps_Indutrialization
+            docker compose pull
+            docker compose up -d
