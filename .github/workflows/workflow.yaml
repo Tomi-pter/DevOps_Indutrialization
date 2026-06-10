@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    # We declare this output so the deploy job can read it later
     outputs:
       short_sha: ${{ steps.get_hash.outputs.short_sha }}
     steps:
@@ -23,7 +22,6 @@ jobs:
         run: |
           COMMIT_HASH=$(echo ${{ github.sha }} | cut -c 1-7)
           echo "Commit Hash: $COMMIT_HASH"
-          # This sets the output variable for the entire job block
           echo "short_sha=$COMMIT_HASH" >> $GITHUB_OUTPUT
 
       - name: Set up Python 3.9
@@ -62,11 +60,9 @@ jobs:
           script: |
             cd ~/DevOps_Indutrialization
 
-            # Map your 7-character hash output into a local .env file on the VM
             echo "IMAGE_TAG=${{ needs.build.outputs.short_sha }}" > .env
 
             echo "Deploying image version: ${{ needs.build.outputs.short_sha }}"
 
-            # Removed the invalid '-d' flag from pull
             docker compose pull
             docker compose up -d
