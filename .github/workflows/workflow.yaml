@@ -1,0 +1,17 @@
+name: Workflow for CI/CD 
+
+on:
+  push:
+    branches: main 
+  pull_request:
+    branches: main 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Echo my name
+        run: | echo "My name is Tomi"
