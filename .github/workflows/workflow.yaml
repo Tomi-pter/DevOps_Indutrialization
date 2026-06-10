@@ -48,6 +48,7 @@ jobs:
           tags: |
             tomipter/devops-flask-app:${{ steps.get_hash.outputs.short_sha }}
             tomipter/devops-flask-app:latest
+            tomipter/devops-flask-app:app2
 
   deploy:
     needs: build
@@ -63,11 +64,20 @@ jobs:
             cd ~/DevOps_Indutrialization
             git pull origin main
 
-            cp .env.example .env
+            if [ -f .env ]; then
+              EXISTING_APP2_TAG=$(grep -E '^APP2_IMAGE_TAG=' .env | cut -d '=' -f2)
+            else
+              cp .env.example .env
+              EXISTING_APP2_TAG=$(grep -E '^APP2_IMAGE_TAG=' .env | cut -d '=' -f2)
+            fi
+
             sed -i "s/^APP1_IMAGE_TAG=.*/APP1_IMAGE_TAG=${{ needs.build.outputs.short_sha }}/" .env
+            if ! grep -q '^APP2_IMAGE_TAG=' .env; then
+              echo "APP2_IMAGE_TAG=$EXISTING_APP2_TAG" >> .env
+            fi
 
             echo "Deploying flask-app-1 tag: ${{ needs.build.outputs.short_sha }}"
-            echo "Using flask-app-2 tag from template: $(grep '^APP2_IMAGE_TAG=' .env | cut -d '=' -f2)"
+            echo "Using flask-app-2 tag: $EXISTING_APP2_TAG"
 
             docker compose pull
             docker compose up -d --force-recreate
