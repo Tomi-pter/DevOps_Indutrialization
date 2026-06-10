@@ -56,3 +56,7 @@ def get_mysql_time():
         return f"<h1>MySQL Current Time: {db_time[0]} from todays class (2nd of june 2026)</h1>"
     except Exception as e:
         return f"<h1>Error connecting to MySQL:</h1><p>{str(e)}</p>"
+    
+@app.route('/version')
+def get_version():
+    return {"version": "1.0"}
