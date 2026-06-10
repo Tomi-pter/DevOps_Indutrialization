@@ -62,5 +62,5 @@ jobs:
             cd ~/DevOps_Indutrialization
             IMAGE_TAG=${{ env.COMMIT_HASH }}
             echo "Deploying image: tomipter/devops-flask-app:$IMAGE_TAG"
-            IMAGE_TAG=$IMAGE_TAG docker compose pull
+            IMAGE_TAG=$IMAGE_TAG docker compose pull -d
             IMAGE_TAG=$IMAGE_TAG docker compose up -d
