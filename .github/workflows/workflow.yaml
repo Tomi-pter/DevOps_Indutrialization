@@ -65,7 +65,7 @@ jobs:
 
             EXISTING_APP2_TAG=$(grep -E '^APP2_IMAGE_TAG=' .env 2>/dev/null | cut -d '=' -f2)
             if [ -z "$EXISTING_APP2_TAG" ]; then
-              EXISTING_APP2_TAG=latest
+              EXISTING_APP2_TAG=app2
             fi
 
             cat > .env <<EOF
