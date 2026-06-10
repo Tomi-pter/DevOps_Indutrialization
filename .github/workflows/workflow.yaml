@@ -55,6 +55,6 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_PEM_KEY }}
           script: |
-            cd /DevOps_Indutrialization
+            cd ~/DevOps_Indutrialization
             docker compose pull
             docker compose up -d
