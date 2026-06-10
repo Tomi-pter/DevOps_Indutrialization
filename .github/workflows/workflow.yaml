@@ -17,6 +17,12 @@ jobs:
         run: |
           echo "My name is Tomi"
 
+      - name: Commit Hash
+        run: |
+          COMMIT_HASH=$(echo ${{ github.sha }} | cut -c 1-7)
+          echo "Commit Hash: $COMMIT_HASH"
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+
       - uses: actions/checkout@v4
       - name: Set up Python 3.9
         uses: actions/setup-python@v3
@@ -40,4 +46,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: tomipter/devops-flask-app:${{ github.sha[:5] }}
+          tags: tomipter/devops-flask-app:${{ env.COMMIT_HASH }}
