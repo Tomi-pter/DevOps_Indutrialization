@@ -45,7 +45,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: tomipter/devops-flask-app:${{ steps.get_hash.outputs.short_sha }}
+          tags: |
+            tomipter/devops-flask-app:${{ steps.get_hash.outputs.short_sha }}
+            tomipter/devops-flask-app:latest
 
   deploy:
     needs: build
