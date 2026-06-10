@@ -49,6 +49,7 @@ jobs:
           tags: tomipter/devops-flask-app:${{ env.COMMIT_HASH }}
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to VM via SSH
@@ -59,5 +60,7 @@ jobs:
           key: ${{ secrets.VM_PEM_KEY }}
           script: |
             cd ~/DevOps_Indutrialization
-            docker compose pull
-            docker compose up -d
+            IMAGE_TAG=${{ github.sha[:7] }}
+            echo "Deploying image: tomipter/devops-flask-app:$IMAGE_TAG"
+            IMAGE_TAG=$IMAGE_TAG docker compose pull
+            IMAGE_TAG=$IMAGE_TAG docker compose up -d
