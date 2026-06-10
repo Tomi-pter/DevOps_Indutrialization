@@ -48,6 +48,9 @@ jobs:
           push: true
           tags: tomipter/devops-flask-app:${{ env.COMMIT_HASH }}
 
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
