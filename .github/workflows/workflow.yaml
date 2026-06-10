@@ -61,10 +61,20 @@ jobs:
           key: ${{ secrets.VM_PEM_KEY }}
           script: |
             cd ~/DevOps_Indutrialization
+            git pull origin main
 
-            echo "IMAGE_TAG=${{ needs.build.outputs.short_sha }}" > .env
+            EXISTING_APP2_TAG=$(grep -E '^APP2_IMAGE_TAG=' .env 2>/dev/null | cut -d '=' -f2)
+            if [ -z "$EXISTING_APP2_TAG" ]; then
+              EXISTING_APP2_TAG=latest
+            fi
 
-            echo "Deploying image version: ${{ needs.build.outputs.short_sha }}"
+            cat > .env <<EOF
+            APP1_IMAGE_TAG=${{ needs.build.outputs.short_sha }}
+            APP2_IMAGE_TAG=$EXISTING_APP2_TAG
+            EOF
+
+            echo "Deploying flask-app-1 tag: ${{ needs.build.outputs.short_sha }}"
+            echo "Keeping flask-app-2 tag: $EXISTING_APP2_TAG"
 
             docker compose pull
             docker compose up -d
