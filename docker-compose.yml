@@ -13,8 +13,7 @@ services:
       DB_USER: "root"
       DB_PASSWORD: "secret"
       DB_NAME: "mysql"
-    volumes:
-      - .:/app
+
     depends_on:
       - mysql
 
