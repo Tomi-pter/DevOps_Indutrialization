@@ -48,7 +48,6 @@ jobs:
           tags: |
             tomipter/devops-flask-app:${{ steps.get_hash.outputs.short_sha }}
             tomipter/devops-flask-app:latest
-            tomipter/devops-flask-app:app2
 
   deploy:
     needs: build
@@ -64,20 +63,21 @@ jobs:
             cd ~/DevOps_Indutrialization
             git pull origin main
 
-            if [ -f .env ]; then
-              EXISTING_APP2_TAG=$(grep -E '^APP2_IMAGE_TAG=' .env | cut -d '=' -f2)
-            else
+            # Init .env if it doesn't exist
+            if [ ! -f .env ]; then
               cp .env.example .env
-              EXISTING_APP2_TAG=$(grep -E '^APP2_IMAGE_TAG=' .env | cut -d '=' -f2)
             fi
 
+            # Only update APP1 — APP2 stays frozen on its tag
             sed -i "s/^APP1_IMAGE_TAG=.*/APP1_IMAGE_TAG=${{ needs.build.outputs.short_sha }}/" .env
+
+            # Ensure APP2_IMAGE_TAG exists in .env (don't overwrite if already set)
             if ! grep -q '^APP2_IMAGE_TAG=' .env; then
-              echo "APP2_IMAGE_TAG=$EXISTING_APP2_TAG" >> .env
+              echo "APP2_IMAGE_TAG=app2" >> .env
             fi
 
-            echo "Deploying flask-app-1 tag: ${{ needs.build.outputs.short_sha }}"
-            echo "Using flask-app-2 tag: $EXISTING_APP2_TAG"
+            echo "Deploying flask-app-1 with tag: ${{ needs.build.outputs.short_sha }}"
+            echo "flask-app-2 stays on: $(grep APP2_IMAGE_TAG .env)"
 
-            docker compose pull
-            docker compose up -d --force-recreate
+            docker compose pull flask-app-1
+            docker compose up -d --no-deps --force-recreate flask-app-1
