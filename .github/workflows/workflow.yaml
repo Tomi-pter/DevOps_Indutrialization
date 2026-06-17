@@ -47,7 +47,7 @@ jobs:
           push: true
           tags: |
             tomipter/devops-flask-app:${{ steps.get_hash.outputs.short_sha }}
-            tomipter/devops-flask-app:latest
+            tomipter/devops-flask-app:app1
 
   deploy:
     needs: build
