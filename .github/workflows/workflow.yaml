@@ -63,15 +63,12 @@ jobs:
             cd ~/DevOps_Indutrialization
             git pull origin main
 
-            # Init .env if it doesn't exist
             if [ ! -f .env ]; then
               cp .env.example .env
             fi
 
-            # Only update APP1 — APP2 stays frozen on its tag
             sed -i "s/^APP1_IMAGE_TAG=.*/APP1_IMAGE_TAG=${{ needs.build.outputs.short_sha }}/" .env
 
-            # Ensure APP2_IMAGE_TAG exists in .env (don't overwrite if already set)
             if ! grep -q '^APP2_IMAGE_TAG=' .env; then
               echo "APP2_IMAGE_TAG=app2" >> .env
             fi
