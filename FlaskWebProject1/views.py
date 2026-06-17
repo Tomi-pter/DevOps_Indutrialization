@@ -59,4 +59,4 @@ def get_mysql_time():
     
 @app.route('/version')
 def get_version():
-    return {"version": "500"}
+    return {"version": "4200"}
